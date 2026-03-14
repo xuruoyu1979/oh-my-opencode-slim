@@ -50,12 +50,9 @@ Examples:
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
-  if (args.length === 0 || args[0] === 'install' || args[0] === 'models') {
-    const hasSubcommand = args[0] === 'install' || args[0] === 'models';
+  if (args.length === 0 || args[0] === 'install') {
+    const hasSubcommand = args[0] === 'install';
     const installArgs = parseArgs(args.slice(hasSubcommand ? 1 : 0));
-    if (args[0] === 'models') {
-      installArgs.modelsOnly = true;
-    }
     const exitCode = await install(installArgs);
     process.exit(exitCode);
   } else if (args[0] === '-h' || args[0] === '--help') {
