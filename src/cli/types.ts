@@ -5,7 +5,6 @@ export interface InstallArgs {
   tmux?: BooleanArg;
   skills?: BooleanArg;
   dryRun?: boolean;
-  modelsOnly?: boolean;
 }
 
 export interface OpenCodeConfig {
@@ -20,7 +19,6 @@ export interface InstallConfig {
   installSkills: boolean;
   installCustomSkills: boolean;
   dryRun?: boolean;
-  modelsOnly?: boolean;
 }
 
 export interface ConfigMergeResult {

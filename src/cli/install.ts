@@ -118,17 +118,13 @@ async function runInstall(config: InstallConfig): Promise<number> {
 
   printHeader(isUpdate);
 
-  const modelsOnly = config.modelsOnly === true;
 
-  let totalSteps = modelsOnly ? 2 : 4;
-  if (!modelsOnly && config.installSkills) totalSteps += 1;
-  if (!modelsOnly && config.installCustomSkills) totalSteps += 1;
+  let totalSteps = 4;
+  if (config.installSkills) totalSteps += 1;
+  if (config.installCustomSkills) totalSteps += 1;
 
   let step = 1;
 
-  if (modelsOnly) {
-    printInfo('Models-only mode: updating model assignments only.');
-  }
 
   printStep(step++, totalSteps, 'Checking OpenCode installation...');
   if (config.dryRun) {
@@ -138,7 +134,7 @@ async function runInstall(config: InstallConfig): Promise<number> {
     if (!ok) return 1;
   }
 
-  if (!modelsOnly) {
+  {
     printStep(step++, totalSteps, 'Adding oh-my-opencode-slim plugin...');
     if (config.dryRun) {
       printInfo('Dry run mode - skipping plugin installation');
@@ -148,7 +144,7 @@ async function runInstall(config: InstallConfig): Promise<number> {
     }
   }
 
-  if (!modelsOnly) {
+  {
     printStep(step++, totalSteps, 'Disabling OpenCode default agents...');
     if (config.dryRun) {
       printInfo('Dry run mode - skipping agent disabling');
@@ -253,7 +249,6 @@ export async function install(args: InstallArgs): Promise<number> {
     installSkills: args.skills === 'yes',
     installCustomSkills: args.skills === 'yes',
     dryRun: args.dryRun,
-    modelsOnly: args.modelsOnly,
   };
 
   return runInstall(config);

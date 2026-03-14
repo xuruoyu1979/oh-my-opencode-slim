@@ -16,8 +16,6 @@ function parseArgs(args: string[]): InstallArgs {
       result.skills = arg.split('=')[1] as BooleanArg;
     } else if (arg === '--dry-run') {
       result.dryRun = true;
-    } else if (arg === '--models-only') {
-      result.modelsOnly = true;
     } else if (arg === '-h' || arg === '--help') {
       printHelp();
       process.exit(0);
