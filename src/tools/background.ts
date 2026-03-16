@@ -180,5 +180,80 @@ Only cancels pending/starting/running tasks.`,
     },
   });
 
-  return { background_task, background_output, background_cancel };
+  // Tool for listing background tasks
+  const background_list = tool({
+    description: `List all background tasks with optional status filtering.
+
+Returns a table of tasks showing ID, agent, description, status, and duration.
+Use status filter to see only pending, running, completed, failed, or cancelled tasks.`,
+    args: {
+      status: z
+        .enum([
+          'pending',
+          'starting',
+          'running',
+          'completed',
+          'failed',
+          'cancelled',
+        ])
+        .optional()
+        .describe('Filter by status (optional)'),
+    },
+    async execute(args) {
+      const statusFilter = args.status as
+        | 'pending'
+        | 'starting'
+        | 'running'
+        | 'completed'
+        | 'failed'
+        | 'cancelled'
+        | undefined;
+
+      const tasks = manager.listTasks(statusFilter);
+
+      if (tasks.length === 0) {
+        return statusFilter
+          ? `No background tasks with status "${statusFilter}".`
+          : 'No background tasks found.';
+      }
+
+      // Format duration helper
+      const formatDuration = (ms: number): string => {
+        if (ms < 1000) return `${ms}ms`;
+        if (ms < 60000) return `${Math.floor(ms / 1000)}s`;
+        const minutes = Math.floor(ms / 60000);
+        const seconds = Math.floor((ms % 60000) / 1000);
+        return `${minutes}m ${seconds}s`;
+      };
+
+      // Build table output
+      const lines: string[] = [
+        `Found ${tasks.length} background task(s):`,
+        '',
+        'ID | Agent | Description | Status | Duration',
+        '---|-------|-------------|--------|----------',
+      ];
+
+      for (const task of tasks) {
+        const shortId = task.id.slice(0, 12);
+        const desc =
+          task.description.length > 30
+            ? task.description.slice(0, 27) + '...'
+            : task.description;
+        const duration = formatDuration(task.durationMs);
+        lines.push(
+          `${shortId} | ${task.agent} | ${desc} | ${task.status} | ${duration}`,
+        );
+      }
+
+      return lines.join('\n');
+    },
+  });
+
+  return {
+    background_task,
+    background_output,
+    background_cancel,
+    background_list,
+  };
 }

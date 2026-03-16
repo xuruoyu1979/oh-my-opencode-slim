@@ -118,13 +118,11 @@ async function runInstall(config: InstallConfig): Promise<number> {
 
   printHeader(isUpdate);
 
-
   let totalSteps = 4;
   if (config.installSkills) totalSteps += 1;
   if (config.installCustomSkills) totalSteps += 1;
 
   let step = 1;
-
 
   printStep(step++, totalSteps, 'Checking OpenCode installation...');
   if (config.dryRun) {
@@ -133,25 +131,19 @@ async function runInstall(config: InstallConfig): Promise<number> {
     const { ok } = await checkOpenCodeInstalled();
     if (!ok) return 1;
   }
-
-  {
-    printStep(step++, totalSteps, 'Adding oh-my-opencode-slim plugin...');
-    if (config.dryRun) {
-      printInfo('Dry run mode - skipping plugin installation');
-    } else {
-      const pluginResult = await addPluginToOpenCodeConfig();
-      if (!handleStepResult(pluginResult, 'Plugin added')) return 1;
-    }
+  printStep(step++, totalSteps, 'Adding oh-my-opencode-slim plugin...');
+  if (config.dryRun) {
+    printInfo('Dry run mode - skipping plugin installation');
+  } else {
+    const pluginResult = await addPluginToOpenCodeConfig();
+    if (!handleStepResult(pluginResult, 'Plugin added')) return 1;
   }
-
-  {
-    printStep(step++, totalSteps, 'Disabling OpenCode default agents...');
-    if (config.dryRun) {
-      printInfo('Dry run mode - skipping agent disabling');
-    } else {
-      const agentResult = disableDefaultAgents();
-      if (!handleStepResult(agentResult, 'Default agents disabled')) return 1;
-    }
+  printStep(step++, totalSteps, 'Disabling OpenCode default agents...');
+  if (config.dryRun) {
+    printInfo('Dry run mode - skipping agent disabling');
+  } else {
+    const agentResult = disableDefaultAgents();
+    if (!handleStepResult(agentResult, 'Default agents disabled')) return 1;
   }
 
   printStep(step++, totalSteps, 'Writing oh-my-opencode-slim configuration...');

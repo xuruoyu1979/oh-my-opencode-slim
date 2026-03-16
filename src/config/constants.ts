@@ -10,6 +10,7 @@ export const SUBAGENT_NAMES = [
   'oracle',
   'designer',
   'fixer',
+  'cartography',
 ] as const;
 
 export const ORCHESTRATOR_NAME = 'orchestrator' as const;
@@ -23,7 +24,7 @@ export type AgentName = (typeof ALL_AGENT_NAMES)[number];
 // orchestrator: can spawn all subagents (full delegation)
 // fixer: leaf node — prompt forbids delegation; use grep/glob for lookups
 // designer: can spawn explorer (for research during design)
-// explorer/librarian/oracle: cannot spawn any subagents (leaf nodes)
+// explorer/librarian/oracle/cartography: cannot spawn any subagents (leaf nodes)
 // Unknown agent types not listed here default to explorer-only access
 export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
   orchestrator: SUBAGENT_NAMES,
@@ -32,6 +33,7 @@ export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
   explorer: [],
   librarian: [],
   oracle: [],
+  cartography: [],
 };
 
 // Default models for each agent
@@ -43,6 +45,7 @@ export const DEFAULT_MODELS: Record<AgentName, string | undefined> = {
   explorer: 'openai/gpt-5-codex',
   designer: 'kimi-for-coding/k2p5',
   fixer: 'openai/gpt-5-codex',
+  cartography: 'openai/gpt-5-codex',
 };
 
 // Polling configuration
@@ -57,4 +60,3 @@ export const FALLBACK_FAILOVER_TIMEOUT_MS = 15_000;
 
 // Polling stability
 export const STABLE_POLLS_THRESHOLD = 3;
-

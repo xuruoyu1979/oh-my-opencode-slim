@@ -782,6 +782,43 @@ export class BackgroundTaskManager {
   }
 
   /**
+   * List all background tasks with optional status filtering.
+   *
+   * @param statusFilter - Optional status to filter by (e.g., 'running', 'completed')
+   * @returns Array of task summaries
+   */
+  listTasks(statusFilter?: BackgroundTask['status']): Array<{
+    id: string;
+    agent: string;
+    description: string;
+    status: BackgroundTask['status'];
+    startedAt: Date;
+    completedAt?: Date;
+    durationMs: number;
+  }> {
+    const tasks = Array.from(this.tasks.values());
+    const filtered = statusFilter
+      ? tasks.filter((t) => t.status === statusFilter)
+      : tasks;
+
+    return filtered.map((task) => {
+      const durationMs = task.completedAt
+        ? task.completedAt.getTime() - task.startedAt.getTime()
+        : Date.now() - task.startedAt.getTime();
+
+      return {
+        id: task.id,
+        agent: task.agent,
+        description: task.description,
+        status: task.status,
+        startedAt: task.startedAt,
+        completedAt: task.completedAt,
+        durationMs,
+      };
+    });
+  }
+
+  /**
    * Clean up all tasks.
    */
   cleanup(): void {

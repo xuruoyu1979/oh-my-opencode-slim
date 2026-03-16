@@ -10,6 +10,7 @@ import {
 } from '../config';
 import { getAgentMcpList } from '../config/agent-mcps';
 
+import { createCartographyAgent } from './cartography';
 import { createDesignerAgent } from './designer';
 import { createExplorerAgent } from './explorer';
 import { createFixerAgent } from './fixer';
@@ -99,6 +100,7 @@ const SUBAGENT_FACTORIES: Record<SubagentName, AgentFactory> = {
   oracle: createOracleAgent,
   designer: createDesignerAgent,
   fixer: createFixerAgent,
+  cartography: createCartographyAgent,
 };
 
 // Public API

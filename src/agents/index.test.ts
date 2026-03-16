@@ -247,6 +247,7 @@ describe('isSubagent type guard', () => {
     expect(isSubagent('oracle')).toBe(true);
     expect(isSubagent('designer')).toBe(true);
     expect(isSubagent('fixer')).toBe(true);
+    expect(isSubagent('cartography')).toBe(true);
   });
 
   test('returns false for orchestrator', () => {
@@ -290,11 +291,12 @@ describe('createAgents', () => {
     expect(names).toContain('oracle');
     expect(names).toContain('librarian');
     expect(names).toContain('fixer');
+    expect(names).toContain('cartography');
   });
 
-  test('creates exactly 6 agents (1 primary + 5 subagents)', () => {
+  test('creates exactly 7 agents (1 primary + 6 subagents)', () => {
     const agents = createAgents();
-    expect(agents.length).toBe(6);
+    expect(agents.length).toBe(7);
   });
 });
 

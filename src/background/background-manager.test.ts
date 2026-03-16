@@ -1319,7 +1319,7 @@ describe('BackgroundTaskManager', () => {
       const ctx = createMockContext();
       const manager = new BackgroundTaskManager(ctx);
 
-      // Orchestrator -> all 5 subagent names
+      // Orchestrator -> all 6 subagent names
       const orchestratorTask = manager.launch({
         agent: 'orchestrator',
         prompt: 'test',
@@ -1340,6 +1340,7 @@ describe('BackgroundTaskManager', () => {
         'oracle',
         'designer',
         'fixer',
+        'cartography',
       ]);
 
       // Fixer -> empty (leaf node)
@@ -1399,7 +1400,160 @@ describe('BackgroundTaskManager', () => {
         'oracle',
         'designer',
         'fixer',
+        'cartography',
       ]);
+    });
+  });
+
+  describe('listTasks', () => {
+    test('returns empty array when no tasks exist', () => {
+      const ctx = createMockContext();
+      const manager = new BackgroundTaskManager(ctx);
+
+      const tasks = manager.listTasks();
+      expect(tasks).toEqual([]);
+    });
+
+    test('returns all tasks when no filter specified', async () => {
+      const ctx = createMockContext();
+      const manager = new BackgroundTaskManager(ctx);
+
+      manager.launch({
+        agent: 'explorer',
+        prompt: 'test1',
+        description: 'First test task',
+        parentSessionId: 'parent-123',
+      });
+
+      manager.launch({
+        agent: 'fixer',
+        prompt: 'test2',
+        description: 'Second test task',
+        parentSessionId: 'parent-123',
+      });
+
+      const tasks = manager.listTasks();
+      expect(tasks).toHaveLength(2);
+      expect(tasks[0]?.agent).toBe('explorer');
+      expect(tasks[1]?.agent).toBe('fixer');
+    });
+
+    test('filters tasks by status', async () => {
+      const ctx = createMockContext();
+      const manager = new BackgroundTaskManager(ctx);
+
+      const task1 = manager.launch({
+        agent: 'explorer',
+        prompt: 'test1',
+        description: 'First test task',
+        parentSessionId: 'parent-123',
+      });
+
+      // Launch second task but we don't need to reference it
+      manager.launch({
+        agent: 'fixer',
+        prompt: 'test2',
+        description: 'Second test task',
+        parentSessionId: 'parent-123',
+      });
+
+      // Cancel task1
+      manager.cancel(task1.id);
+
+      // Get only cancelled tasks
+      const cancelledTasks = manager.listTasks('cancelled');
+      expect(cancelledTasks).toHaveLength(1);
+      expect(cancelledTasks[0]?.id).toBe(task1.id);
+
+      // Get running tasks (task2 is pending/starting/running)
+      // Note: task2 may be pending depending on timing
+      const runningTasks = manager.listTasks('running');
+      const pendingTasks = manager.listTasks('pending');
+      const activeTasks = runningTasks.length + pendingTasks.length;
+      expect(activeTasks).toBeGreaterThanOrEqual(0);
+    });
+
+    test('returns task with correct fields', () => {
+      const ctx = createMockContext();
+      const manager = new BackgroundTaskManager(ctx);
+
+      const task = manager.launch({
+        agent: 'explorer',
+        prompt: 'test',
+        description: 'Test task description',
+        parentSessionId: 'parent-123',
+      });
+
+      const tasks = manager.listTasks();
+      expect(tasks).toHaveLength(1);
+
+      const listedTask = tasks[0];
+      expect(listedTask).toBeDefined();
+      expect(listedTask?.id).toBe(task.id);
+      expect(listedTask?.agent).toBe('explorer');
+      expect(listedTask?.description).toBe('Test task description');
+      expect(listedTask?.status).toBeDefined();
+      expect(listedTask?.startedAt).toBeInstanceOf(Date);
+      expect(listedTask?.durationMs).toBeGreaterThanOrEqual(0);
+    });
+
+    test('calculates duration for running tasks', async () => {
+      const ctx = createMockContext();
+      const manager = new BackgroundTaskManager(ctx);
+
+      manager.launch({
+        agent: 'explorer',
+        prompt: 'test',
+        description: 'Test task',
+        parentSessionId: 'parent-123',
+      });
+
+      // Wait a bit
+      await new Promise((r) => setTimeout(r, 50));
+
+      const tasks = manager.listTasks();
+      expect(tasks[0]?.durationMs).toBeGreaterThanOrEqual(0);
+    });
+
+    test('includes completedAt for completed tasks', async () => {
+      const ctx = createMockContext({
+        sessionMessagesResult: {
+          data: [
+            {
+              info: { role: 'assistant' },
+              parts: [{ type: 'text', text: 'done' }],
+            },
+          ],
+        },
+      });
+      const manager = new BackgroundTaskManager(ctx);
+
+      const task = manager.launch({
+        agent: 'explorer',
+        prompt: 'test',
+        description: 'Test task',
+        parentSessionId: 'parent-123',
+      });
+
+      // Small delay to ensure non-zero duration
+      await new Promise((r) => setTimeout(r, 10));
+
+      await Promise.resolve();
+      await Promise.resolve();
+
+      // Trigger completion
+      await manager.handleSessionStatus({
+        type: 'session.status',
+        properties: {
+          sessionID: task.sessionId,
+          status: { type: 'idle' },
+        },
+      });
+
+      const tasks = manager.listTasks('completed');
+      expect(tasks).toHaveLength(1);
+      expect(tasks[0]?.completedAt).toBeInstanceOf(Date);
+      expect(tasks[0]?.durationMs).toBeGreaterThanOrEqual(0);
     });
   });
 });

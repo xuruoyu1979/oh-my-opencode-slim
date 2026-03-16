@@ -7,6 +7,7 @@ const FALLBACK_AGENT_NAMES = [
   'explorer',
   'librarian',
   'fixer',
+  'cartography',
 ] as const;
 
 const MANUAL_AGENT_NAMES = [
@@ -16,6 +17,7 @@ const MANUAL_AGENT_NAMES = [
   'explorer',
   'librarian',
   'fixer',
+  'cartography',
 ] as const;
 
 const ProviderModelIdSchema = z
@@ -55,6 +57,7 @@ export const ManualPlanSchema = z
     explorer: ManualAgentPlanSchema,
     librarian: ManualAgentPlanSchema,
     fixer: ManualAgentPlanSchema,
+    cartography: ManualAgentPlanSchema,
   })
   .strict();
 
@@ -72,6 +75,7 @@ const FallbackChainsSchema = z
     explorer: AgentModelChainSchema.optional(),
     librarian: AgentModelChainSchema.optional(),
     fixer: AgentModelChainSchema.optional(),
+    cartography: AgentModelChainSchema.optional(),
   })
   .catchall(AgentModelChainSchema);
 
