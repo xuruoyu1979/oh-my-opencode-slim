@@ -210,7 +210,7 @@ export function getAgentConfigs(
       if (a.name === 'council') {
         // Council is callable both as a primary agent (user-facing)
         // and as a subagent (orchestrator can delegate to it)
-        sdkConfig.mode = 'all';
+        sdkConfig.mode = 'subagent';
       } else if (a.name === 'councillor' || a.name === 'council-master') {
         // Internal agents — subagent mode, hidden from @ autocomplete
         sdkConfig.mode = 'subagent';
