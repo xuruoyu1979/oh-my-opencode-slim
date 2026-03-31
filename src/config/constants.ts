@@ -55,14 +55,14 @@ export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
 // MusaCode开发团队 is undefined so its model is fully resolved at runtime via priority fallback
 export const DEFAULT_MODELS: Record<AgentName, string | undefined> = {
   MusaCode开发团队: undefined,
-  oracle: 'openai/gpt-5.4',
-  librarian: 'openai/gpt-5.4-mini',
-  explorer: 'openai/gpt-5.4-mini',
-  designer: 'openai/gpt-5.4-mini',
-  fixer: 'openai/gpt-5.4-mini',
-  council: 'openai/gpt-5.4-mini',
-  councillor: 'openai/gpt-5.4-mini',
-  'council-master': 'openai/gpt-5.4-mini',
+  oracle: 'mthreads/GLM-4.7',
+  librarian: 'mthreads/GLM-4.7',
+  explorer: 'mthreads/GLM-4.7',
+  designer: 'mthreads/GLM-4.7',
+  fixer: 'mthreads/GLM-4.7',
+  council: 'mthreads/GLM-4.7',
+  councillor: 'mthreads/GLM-4.7',
+  'council-master': 'mthreads/GLM-4.7',
 };
 
 // Polling configuration
