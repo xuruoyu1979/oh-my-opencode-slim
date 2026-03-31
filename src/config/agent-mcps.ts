@@ -17,6 +17,9 @@ export const DEFAULT_AGENT_MCPS: Record<AgentName, string[]> = {
   council: [],
   councillor: [],
   'council-master': [],
+  'plan-ceo-review': [],
+  'plan-design-review': [],
+  'plan-eng-review': [],
 };
 
 /**
@@ -38,7 +41,9 @@ export function parseList(items: string[], allAvailable: string[]): string[] {
     return allAvailable.filter((item) => !deny.includes(item));
   }
 
-  return allow.filter((item) => !deny.includes(item) && allAvailable.includes(item));
+  return allow.filter(
+    (item) => !deny.includes(item) && allAvailable.includes(item),
+  );
 }
 
 /**

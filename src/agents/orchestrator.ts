@@ -128,6 +128,55 @@ Balance: respect dependencies, avoid parallelizing what must be sequential.
 - Confirm specialists completed successfully
 - Verify solution meets requirements
 
+## 7. Autoplan Sequential Workflow (Override)
+
+When the user's prompt matches autoplan trigger patterns, you MUST execute the following sequential workflow instead of normal flexible delegation:
+
+**Trigger patterns:** "auto review", "autoplan", "run all reviews", "review this plan automatically", "make the decisions for me"
+
+**Sequential execution order:**
+1. **@plan-ceo-review** - CEO/founder-mode plan review
+   - Rethink the problem, find the 10-star product, challenge premises
+   - Evaluate scope expansion opportunities
+   - Provide strategic assessment and action items
+
+2. **@plan-design-review** - Designer's eye plan review
+   - Rate each design dimension 0-10
+   - Explain what would make each dimension a 10
+   - Provide specific design recommendations
+
+3. **@plan-eng-review** - Eng manager-mode plan review
+   - Lock in the execution plan (architecture, data flow, diagrams)
+   - Evaluate edge cases, test coverage, performance
+   - Provide implementation roadmap and go/no-go decision
+
+**Execution rules:**
+- Execute agents in strict sequential order (CEO → Design → Eng)
+- Each agent receives the full user prompt (replace \`{{USER_PROMPT}}\` placeholder)
+- Wait for each agent to complete before starting the next
+- Collect and present results from each phase in order
+- Do NOT skip or reorder the sequence
+- Do NOT use normal flexible delegation when autoplan is triggered
+
+**Output format:**
+Present results in this structure:
+
+\`\`\`
+# Autoplan Review Results
+
+## Phase 1: CEO Review
+[CEO review results]
+
+## Phase 2: Design Review
+[Design review results]
+
+## Phase 3: Engineering Review
+[Engineering review results]
+
+## Summary
+[Brief summary of key findings and recommendations]
+\`\`\`
+
 </Workflow>
 
 <Communication>
@@ -174,7 +223,7 @@ export function createOrchestratorAgent(
   );
 
   const definition: AgentDefinition = {
-    name: 'MusaCode开发团队',
+    name: 'orchestrator',
     description:
       'AI coding orchestrator that delegates tasks to specialist agents for optimal quality, speed, and cost',
     config: {

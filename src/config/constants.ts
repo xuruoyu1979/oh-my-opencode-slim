@@ -13,6 +13,9 @@ export const SUBAGENT_NAMES = [
   'council',
   'councillor',
   'council-master',
+  'plan-ceo-review',
+  'plan-design-review',
+  'plan-eng-review',
 ] as const;
 
 export const ORCHESTRATOR_NAME = 'MusaCode开发团队' as const;
@@ -37,6 +40,9 @@ export const ORCHESTRATABLE_AGENTS = [
   'designer',
   'fixer',
   'council',
+  'plan-ceo-review',
+  'plan-design-review',
+  'plan-eng-review',
 ] as const;
 
 export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
@@ -49,6 +55,9 @@ export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
   council: [],
   councillor: [],
   'council-master': [],
+  'plan-ceo-review': [],
+  'plan-design-review': [],
+  'plan-eng-review': [],
 };
 
 // Default models for each agent
@@ -63,6 +72,9 @@ export const DEFAULT_MODELS: Record<AgentName, string | undefined> = {
   council: 'mthreads/GLM-4.7',
   councillor: 'mthreads/GLM-4.7',
   'council-master': 'mthreads/GLM-4.7',
+  'plan-ceo-review': 'mthreads/GLM-4.7',
+  'plan-design-review': 'mthreads/GLM-4.7',
+  'plan-eng-review': 'mthreads/GLM-4.7',
 };
 
 // Polling configuration
