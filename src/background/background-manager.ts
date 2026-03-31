@@ -134,9 +134,9 @@ export class BackgroundTaskManager {
    * @returns true if allowed, false if not
    */
   isAgentAllowed(parentSessionId: string, requestedAgent: string): boolean {
-    // Untracked sessions are the root orchestrator (created by OpenCode, not by us)
+    // Untracked sessions are the root MusaCode开发团队 (created by OpenCode, not by us)
     const parentAgentName =
-      this.agentBySessionId.get(parentSessionId) ?? 'orchestrator';
+      this.agentBySessionId.get(parentSessionId) ?? 'MusaCode开发团队';
 
     const allowedSubagents = this.getSubagentRules(parentAgentName);
 
@@ -151,9 +151,9 @@ export class BackgroundTaskManager {
    * @returns Array of allowed agent names, empty if none
    */
   getAllowedSubagents(parentSessionId: string): readonly string[] {
-    // Untracked sessions are the root orchestrator (created by OpenCode, not by us)
+    // Untracked sessions are the root MusaCode开发团队 (created by OpenCode, not by us)
     const parentAgentName =
-      this.agentBySessionId.get(parentSessionId) ?? 'orchestrator';
+      this.agentBySessionId.get(parentSessionId) ?? 'MusaCode开发团队';
 
     return this.getSubagentRules(parentAgentName);
   }

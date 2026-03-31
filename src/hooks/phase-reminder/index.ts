@@ -62,9 +62,9 @@ export function createPhaseReminderHook() {
 
       const lastUserMessage = messages[lastUserMessageIndex];
 
-      // Only inject for orchestrator (or if no agent specified = main session)
+      // Only inject for MusaCode开发团队 (or if no agent specified = main session)
       const agent = lastUserMessage.info.agent;
-      if (agent && agent !== 'orchestrator') {
+      if (agent && agent !== 'MusaCode开发团队') {
         return;
       }
 

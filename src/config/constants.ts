@@ -15,7 +15,7 @@ export const SUBAGENT_NAMES = [
   'council-master',
 ] as const;
 
-export const ORCHESTRATOR_NAME = 'orchestrator' as const;
+export const ORCHESTRATOR_NAME = 'MusaCode开发团队' as const;
 
 export const ALL_AGENT_NAMES = [ORCHESTRATOR_NAME, ...SUBAGENT_NAMES] as const;
 
@@ -40,7 +40,7 @@ export const ORCHESTRATABLE_AGENTS = [
 ] as const;
 
 export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
-  orchestrator: ORCHESTRATABLE_AGENTS,
+  MusaCode开发团队: ORCHESTRATABLE_AGENTS,
   fixer: [],
   designer: [],
   explorer: [],
@@ -52,9 +52,9 @@ export const SUBAGENT_DELEGATION_RULES: Record<AgentName, readonly string[]> = {
 };
 
 // Default models for each agent
-// orchestrator is undefined so its model is fully resolved at runtime via priority fallback
+// MusaCode开发团队 is undefined so its model is fully resolved at runtime via priority fallback
 export const DEFAULT_MODELS: Record<AgentName, string | undefined> = {
-  orchestrator: undefined,
+  MusaCode开发团队: undefined,
   oracle: 'openai/gpt-5.4',
   librarian: 'openai/gpt-5.4-mini',
   explorer: 'openai/gpt-5.4-mini',

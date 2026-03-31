@@ -164,12 +164,16 @@ export function createAgents(config?: PluginConfig): AgentDefinition[] {
   });
 
   // 3. Create Orchestrator (with its own overrides and custom prompts)
-  // DEFAULT_MODELS.orchestrator is undefined; model is resolved via override or
+  // DEFAULT_MODELS[MusaCode开发团队] is undefined; model is resolved via override or
   // left unset so the runtime chat.message hook can pick it from _modelArray.
-  const orchestratorOverride = getAgentOverride(config, 'orchestrator');
+  const orchestratorOverride = getAgentOverride(config, 'MusaCode开发团队');
   const orchestratorModel =
-    orchestratorOverride?.model ?? DEFAULT_MODELS.orchestrator;
-  const orchestratorPrompts = loadAgentPrompt('orchestrator', config?.preset);
+    // biome-ignore lint: Chinese key requires bracket notation
+    orchestratorOverride?.model ?? DEFAULT_MODELS.MusaCode开发团队;
+  const orchestratorPrompts = loadAgentPrompt(
+    'MusaCode开发团队',
+    config?.preset,
+  );
   const orchestrator = createOrchestratorAgent(
     orchestratorModel,
     orchestratorPrompts.prompt,
@@ -213,7 +217,7 @@ export function getAgentConfigs(
         sdkConfig.hidden = true;
       } else if (isSubagent(a.name)) {
         sdkConfig.mode = 'subagent';
-      } else if (a.name === 'orchestrator') {
+      } else if (a.name === 'MusaCode开发团队') {
         sdkConfig.mode = 'primary';
       }
 

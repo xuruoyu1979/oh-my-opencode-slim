@@ -59,7 +59,7 @@ Returns the synthesized result with councillor summary.`,
 
       // Guard: Only council and orchestrator agents can invoke council sessions.
       // If agent is missing from context, allow through (backward compatible).
-      const allowedAgents = ['council', 'orchestrator'];
+      const allowedAgents = ['council', 'MusaCode开发团队'];
       const callingAgent = (toolContext as { agent?: string }).agent;
       if (callingAgent && !allowedAgents.includes(callingAgent)) {
         throw new Error(

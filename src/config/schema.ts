@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { CouncilConfigSchema } from './council-schema';
 
 const FALLBACK_AGENT_NAMES = [
-  'orchestrator',
+  'MusaCode开发团队',
   'oracle',
   'designer',
   'explorer',
@@ -11,7 +11,7 @@ const FALLBACK_AGENT_NAMES = [
 ] as const;
 
 const MANUAL_AGENT_NAMES = [
-  'orchestrator',
+  'MusaCode开发团队',
   'oracle',
   'designer',
   'explorer',

@@ -126,7 +126,7 @@ export function getSkillPermissionsForAgent(
 ): Record<string, 'allow' | 'ask' | 'deny'> {
   // Orchestrator gets all skills by default, others are restricted
   const permissions: Record<string, 'allow' | 'ask' | 'deny'> = {
-    '*': agentName === 'orchestrator' ? 'allow' : 'deny',
+    '*': agentName === 'MusaCode开发团队' ? 'allow' : 'deny',
   };
 
   // If the user provided an explicit skill list (even empty), honor it

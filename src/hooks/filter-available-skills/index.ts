@@ -38,11 +38,11 @@ function getCurrentAgent(messages: MessageWithParts[]): string {
   for (let index = messages.length - 1; index >= 0; index -= 1) {
     const message = messages[index];
     if (message.info.role === 'user') {
-      return message.info.agent ?? 'orchestrator';
+      return message.info.agent ?? 'MusaCode开发团队';
     }
   }
 
-  return 'orchestrator';
+  return 'MusaCode开发团队';
 }
 
 function extractSkillEntries(blockContent: string): SkillEntry[] {

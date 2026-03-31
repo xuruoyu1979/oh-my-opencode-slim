@@ -174,7 +174,7 @@ export function createOrchestratorAgent(
   );
 
   const definition: AgentDefinition = {
-    name: 'orchestrator',
+    name: 'MusaCode开发团队',
     description:
       'AI coding orchestrator that delegates tasks to specialist agents for optimal quality, speed, and cost',
     config: {

@@ -181,7 +181,7 @@ const OhMyOpenCodeLite: Plugin = async (ctx) => {
         !(opencodeConfig as { default_agent?: string }).default_agent
       ) {
         (opencodeConfig as { default_agent?: string }).default_agent =
-          'orchestrator';
+          'MusaCode开发团队';
       }
 
       // Merge Agent configs — per-agent shallow merge to preserve
